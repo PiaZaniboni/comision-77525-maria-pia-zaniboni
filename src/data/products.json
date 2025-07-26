@@ -1,4 +1,5 @@
-{
+[{
+  "id": 1,
   "title": "Zapato",
   "description": "Zapato azul de cuero",
   "price": 12000,
@@ -6,3 +7,4 @@
   "code": "Z123",
   "stock": 20
 }
+]
