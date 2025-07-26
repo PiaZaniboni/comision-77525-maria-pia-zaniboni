@@ -1,4 +1,4 @@
-import fs from 'fs';
+import { promises as fs } from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
@@ -11,23 +11,21 @@ class ProductManager {
     }
 
     async saveFile(){
-        await fs.promises.writeFile( this.filePath, JSON.stringify(this.products, null, 2) );
+        await fs.writeFile( this.filePath, JSON.stringify(this.products, null, 2) );
     }
 
     async getProducts(){
         try{
-            const data = await fs.promises.readFile(this.filePath, 'utf-8');
+            const data = await fs.readFile(this.filePath, 'utf-8');
             return JSON.parse(data);
-        }catch(err){
-            console.error('Error reading products:', err);
+        }catch{
             return [];
         } 
     }
 
     async getProductById(id){
         const products = await this.getProducts();
-        console.log('Contenido leído:', products);
-        const product = products.find(product => product.id === id);
+        const product = products.find(p => p.id === id);
         if(!product){
             console.log( "Not found");
             return;
@@ -35,9 +33,9 @@ class ProductManager {
         return product;
     }
 
-    async addProduct ({title, description, price, thumbnail, code, stock}){
+    async addProduct ({title, description, code, price, status, stock, category, thumbnails}){
 
-        if ( !title || !description || !price || !thumbnail || !code || !stock){
+        if ( !title || !description || !price || !thumbnails || !code || !stock || !status || !category){
             console.log("All fields are mandatory.");
             return;
         }
@@ -49,41 +47,46 @@ class ProductManager {
             return;
         }
 
+        const newId = products.length > 0 ? products.at(-1).id + 1 : 1;
+
         const newProduct = {
-            id: this.nextId,
+            id: newId,
             title,
             description,
-            price,
-            thumbnail,
             code,
-            stock
+            price,
+            status,
+            stock,
+            category,
+            thumbnails,
         };
 
         this.products.push(newProduct);
         await this.saveFile();
-        this.nextId++;
 
         return newProduct;
     }
 
     async updateProduct (id, updatedProduct){
-        const index = this.products.findIndex(product => product.id == id);
-        if(index === -1) throw new Error ('Produnt not found');
+        const products = await this.getProducts();
+        const index = products.findIndex(p => p.id == id);
+        if(index === -1) return { error:'Produnt not found' };
 
         //Borramos id para no reemplazarlo
-        if (updatedProduct.id) delete updatedProduct.id;
+        delete updatedProduct.id;
 
-        this.products[index] ={
-            ...this.products[index],
+        products[index] = {
+            ...products[index],
             ...updatedProduct
         }
 
         await this.saveFile();
-        return this.products[index];
+        return products[index];
     }
 
     async deleteProduct(id){
-        const index = this.products.findIndex(product => product.id == id);
+        const products = await this.getProducts();
+        const index = products.findIndex(p => p.id == id);
         if(index === -1) throw new Error ('Produnt not found');
         
         const deleted = this.products.splice( index, 1 )[0];
