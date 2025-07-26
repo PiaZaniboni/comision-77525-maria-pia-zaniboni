@@ -3,7 +3,7 @@ import ProductManager from "../managers/ProductManager.js";
 
 const router = Router();
 
-const productManager = new ProductManager(  './src/data/product.json' );
+const productManager = new ProductManager(  './src/data/products.json' );
 
 
 router.get('/', async(req, res) => {

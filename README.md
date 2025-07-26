@@ -14,8 +14,8 @@ Incluye el desarrollo solicitado en la consigna, utilizando tecnologías de Node
 
 1. Clonar este repositorio:
    ```bash
-   git clone https://github.com/PiaZaniboni/zaniboni-backend-77525
-   cd zaniboni-backend-77525
+   git clone https://github.com/PiaZaniboni/comision-77525-maria-pia-zaniboni
+   cd comision-77525-maria-pia-zaniboni
    ```
 
 2. Instalar las dependencias del proyecto:
