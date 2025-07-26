@@ -8,39 +8,26 @@ class ProductManager {
 
     constructor(filePath){
         this.filePath = filePath || path.join(__dirname, '../data/products.json'); 
-        this.products = [];
-        this.nextId = 1;
-
-        this.init();
-    }
-
-    async init (){
-        try{
-            if( fs.existsSync(this.filePath) ){
-                const data = await fs.promises.readFile( this.filePath, 'utf-8');
-                this.products = JSON.parse(data);
-
-                if( this.products.length > 0 ){
-                    this.nextId = Math.max( ...this.products.map( product => product.id ) ) + 1; 
-                }
-            }else{
-                await fs.promises.writeFile( this.filePath, JSON.stringify( [], null, 2) );
-            }
-        }catch (err){
-            console.error('Error initializing ProductManager: ', err );
-        }
     }
 
     async saveFile(){
         await fs.promises.writeFile( this.filePath, JSON.stringify(this.products, null, 2) );
     }
 
-    getProducts(){
-        return this.products;
+    async getProducts(){
+        try{
+            const data = await fs.promises.readFile(this.filePath, 'utf-8');
+            return JSON.parse(data);
+        }catch(err){
+            console.error('Error reading products:', err);
+            return [];
+        } 
     }
 
-    getProductById(id){
-        const product = this.products.find(product => product.id === id);
+    async getProductById(id){
+        const products = await this.getProducts();
+        console.log('Contenido leído:', products);
+        const product = products.find(product => product.id === id);
         if(!product){
             console.log( "Not found");
             return;
