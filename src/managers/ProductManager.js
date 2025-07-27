@@ -7,44 +7,45 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 class ProductManager {
 
     constructor(filePath){
-        this.filePath = filePath || path.join(__dirname, '../data/products.json'); 
-    }
-
-    async saveFile(){
-        await fs.writeFile( this.filePath, JSON.stringify(this.products, null, 2) );
+        this.path = path.resolve(__dirname, '..', filePath); 
     }
 
     async getProducts(){
         try{
-            const data = await fs.readFile(this.filePath, 'utf-8');
-            return JSON.parse(data);
-        }catch{
-            return [];
+          const data = await fs.readFile(this.path, 'utf-8');
+          return JSON.parse(data);
+        }catch(err){
+          console.error(`Error reading product file: ${err.message}`);
+          throw new Error('Failed to load products');
         } 
     }
 
     async getProductById(id){
+      try {
         const products = await this.getProducts();
         const product = products.find(p => p.id === id);
         if(!product){
-            console.log( "Not found");
-            return;
+            throw new Error("Product not found");
         }
         return product;
+      }catch(err){
+        throw err;
+      }
     }
 
     async addProduct ({title, description, code, price, status, stock, category, thumbnails}){
+        status = status ?? true;
+        thumbnails = thumbnails || [];
 
         if ( !title || !description || !price || !thumbnails || !code || !stock || !status || !category){
-            console.log("All fields are mandatory.");
-            return;
+          throw new Error("All fields are mandatory.");
         }
 
-        const codeExist = this.products.some( product => product.code === code );
+        const products = await this.getProducts();
+        const codeExist = products.some( product => product.code === code );
 
         if (codeExist){
-            console.log(`Product code "${code}" already exists.`);
-            return;
+          throw new Error(`Product code "${code}" already exists.`);
         }
 
         const newId = products.length > 0 ? products.at(-1).id + 1 : 1;
@@ -61,8 +62,8 @@ class ProductManager {
             thumbnails,
         };
 
-        this.products.push(newProduct);
-        await this.saveFile();
+        products.push(newProduct);
+        await fs.writeFile( this.path, JSON.stringify(products, null, 2) );
 
         return newProduct;
     }
@@ -70,7 +71,7 @@ class ProductManager {
     async updateProduct (id, updatedProduct){
         const products = await this.getProducts();
         const index = products.findIndex(p => p.id == id);
-        if(index === -1) return { error:'Produnt not found' };
+        if(index === -1) throw new Error('Product not found');
 
         //Borramos id para no reemplazarlo
         delete updatedProduct.id;
@@ -80,17 +81,18 @@ class ProductManager {
             ...updatedProduct
         }
 
-        await this.saveFile();
+        await fs.writeFile( this.path, JSON.stringify(products, null, 2) );
         return products[index];
     }
 
     async deleteProduct(id){
         const products = await this.getProducts();
         const index = products.findIndex(p => p.id == id);
+
         if(index === -1) throw new Error ('Produnt not found');
         
-        const deleted = this.products.splice( index, 1 )[0];
-        await this.saveFile();
+        const deleted = products.splice( index, 1 )[0];
+        await fs.writeFile( this.path, JSON.stringify(products, null, 2) );
         return deleted;
     }
 

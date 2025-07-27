@@ -3,7 +3,7 @@ import CartManager from '../managers/CartManager.js';
 
 const router = Router()
 
-const cartManager = new CartManager('./src/data/carts.json');
+const cartManager = new CartManager('./data/carts.json');
 
 router.post('/', async(req , res) =>{
     const newCart = await cartManager.createCart()

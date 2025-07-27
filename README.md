@@ -8,7 +8,6 @@
 ## Descripción
 
 Este repositorio contiene la Entrega N° 1 correspondiente al curso **Programación Backend I: Desarrollo Avanzado de Backend**.  
-Incluye el desarrollo solicitado en la consigna, utilizando tecnologías de Node.js y aplicando buenas prácticas de programación.
 
 ## Instalación
 
@@ -23,7 +22,7 @@ Incluye el desarrollo solicitado en la consigna, utilizando tecnologías de Node
    npm i
    ```
 
-3. Run codigo:
+3. Run aplicacion:
    ```bash
    npm run dev
    ```
