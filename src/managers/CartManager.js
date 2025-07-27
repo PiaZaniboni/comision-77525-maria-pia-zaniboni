@@ -6,58 +6,73 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 class CartManager {
     constructor(filePath){
-        this.filePath = path.resolve(__dirname, '..', __filename);
-    }
-
-    async saveCarts(){
-        await fs.writeFile( this.filePath, JSON.stringify(this.carts, null, 2) );
+        this.path = path.resolve(__dirname, '..', filePath);
     }
 
     async getCarts(){
         try{
-            const data = await fs.readFile( this.filePath, 'utf-8' );
+            const data = await fs.readFile( this.path, 'utf-8' );
             return JSON.parse(data);
         }catch{
-            return [];
+            if (err.code === 'ENOENT') return [];
+            throw new Error('Error reading carts file');
         }
     }
 
     async createCart (){
-        const carts = await this.getCarts();
-        const newId = carts.length > 0 ? carts.at(-1).id + 1 : 1;
+        try {
+            const carts = await this.getCarts();
+            const newId = carts.length > 0 ? carts.at(-1).id + 1 : 1;
 
-        const newCart = {
-            id: newId,
-            products: []
+            const newCart = {
+                id: newId,
+                products: []
+            }
+
+            carts.push(newCart);
+            await fs.writeFile( this.path, JSON.stringify(carts, null, 2) );
+
+            return newCart;
+        }catch(err){
+            throw new Error('Error creating cart: ' + err.message);
         }
-
-        carts.push(newCart);
-        await this.saveCarts();
-
-        return newCart;
     }
 
     async getCartById (id){
-        const carts = await this.getCarts();
-        return carts.find( c => c.id === id );
+        try{
+            const carts = await this.getCarts();
+            const cart = carts.find(c => c.id == id);
+            
+            if(!cart) throw new Error('Cart not found');
+
+            return cart;
+        }catch(err){
+            throw new Error('Error retrieving cart: ' + err.message);
+        }
+        
     }
 
     async addProductToCart( cartId, productId ){
-        const carts = await this.getCarts();
-        const cart = carts.find( c => c.id === id );
+        try {
+            const cartIdNum = Number(cartId);
+            const carts = await this.getCarts();
+            const cart = carts.find( c => c.id === cartIdNum );
 
-        if ( !cart ) return { error: 'Cart not found' };
+            if ( !cart ) throw new Error('Cart not found');
 
-        const existingProduct = cart.products.find( p => p.product === productId );
+            const existingProduct = cart.products.find( p => p.product === productId );
 
-        if(existingProduct){
-            existingProduct.quantify += 1;
-        }else{
-            cart.products.push( { product:productId, quantify: 1 });
+            if(existingProduct){
+                existingProduct.quantity += 1;
+            }else{
+                cart.products.push( { product: productId, quantity: 1 });
+            }
+
+            await fs.writeFile( this.path, JSON.stringify(carts, null, 2) );
+            return cart;
+        }catch(err){
+            throw new Error('Error adding product to cart: ' + err.message);
         }
-
-        await this.saveCarts();
-        return cart;
     }
 
 }
