@@ -1,0 +1,30 @@
+{
+  "name": "comision-77525-maria-pia-zaniboni",
+  "version": "1.0.0",
+  "description": "**Curso:** Desarrollo Avanzado de Backend   **Comisión:** 77525   **Alumna:** María Pía Zaniboni   **LinkedIn:** [https://www.linkedin.com/in/pia-zaniboni/](https://www.linkedin.com/in/pia-zaniboni/)",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon ./src/app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/PiaZaniboni/comision-77525-maria-pia-zaniboni.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "bugs": {
+    "url": "https://github.com/PiaZaniboni/comision-77525-maria-pia-zaniboni/issues"
+  },
+  "homepage": "https://github.com/PiaZaniboni/comision-77525-maria-pia-zaniboni#readme",
+  "dependencies": {
+    "express": "^5.1.0",
+    "express-handlebars": "^8.0.3",
+    "mongoose": "^8.18.2",
+    "socket.io": "^4.8.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.10"
+  }
+}

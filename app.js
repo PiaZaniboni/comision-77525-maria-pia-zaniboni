@@ -5,10 +5,7 @@ import cartsRouter from './routers/carts.router.js';
 const PORT = 8080;
 
 const app = express();
-app.use(express.json()); //Midleware para que express lea los json
-
-app.use('/api/products', productsRouter);
-app.use('/api/carts', cartsRouter);
+app.use(express.json());
 
 app.listen( PORT,()=>{
     console.log(`listen port ${PORT}`);

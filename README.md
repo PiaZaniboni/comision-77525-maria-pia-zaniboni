@@ -1,4 +1,4 @@
-# Entregas - Programación Backend I
+# Entrega Final - Programación Backend I
 
 **Curso:** Desarrollo Avanzado de Backend  
 **Comisión:** 77525  
@@ -7,30 +7,12 @@
 
 ---
 
-## 📂 Contenido del repositorio
+## 🎯 Objetivos de la entrega final
 
-Este repositorio contiene las entregas correspondientes al curso **Programación Backend I: Desarrollo Avanzado de Backend**.
-
-- **Entrega N° 1** → Manejo de productos y carritos con persistencia en archivos.  
-  Carpeta: [`/entrega_1`](./entrega_1)
-
-- **Entrega N° 2** → Configuración de **Websockets** y **Handlebars**.  
-  Carpeta: [`/entrega_2`](./entrega_2)
-
----
-
-## 📌 Descripción de las entregas
-
-### 🔹 Entrega N° 1
-Implementación de un backend que permite gestionar productos y carritos con persistencia en archivos JSON.  
-Incluye endpoints REST en Express para realizar operaciones CRUD.
-
-### 🔹 Entrega N° 2
-Configuración del servidor para trabajar con **Handlebars** y **WebSockets** mediante `socket.io`.  
-Se incluyen las siguientes vistas:
-
-- **`home.handlebars`** → muestra todos los productos agregados hasta el momento.  
-- **`realTimeProducts.handlebars`** → lista de productos en **tiempo real**, la cual se actualiza automáticamente al **crear** o **eliminar** un producto.  
+- Utilizar **MongoDB** como sistema de persistencia principal.  
+- Definir y profesionalizar todos los endpoints para gestionar **productos** y **carritos**.  
+- Implementar filtros, paginación y ordenamientos en consultas.  
+- Optimizar la gestión de carritos aplicando los últimos conceptos vistos en el curso.  
 
 ---
 
@@ -42,12 +24,7 @@ Se incluyen las siguientes vistas:
    cd comision-77525-maria-pia-zaniboni
    ```
 
-2. Entrar a la carpeta de la entrega que quieras ejecutar (ejemplo: `entrega_2`):
-   ```bash
-   cd entrega_2
-   ```
-
-3. Instalar dependencias:
+2. Instalar dependencias:
    ```bash
    npm i
    ```
@@ -59,7 +36,18 @@ Se incluyen las siguientes vistas:
 
 ---
 
-## 🖼️ Capturas de la Entrega N° 2
+## 🖼️ Capturas de la Entrega Final
+
+- **/products**  
+  - Visualización de productos con **paginación**.  
+  - Cada producto puede:  
+    - Llevar a `/products/:pid` para ver detalle completo.  
+    - Agregarse al carrito directamente con un botón.  
+![Products View](./assets/products.png)
+
+- **/carts/:cid**  
+  - Vista de un carrito específico con productos listados y detallados.  
+![Carts View](./assets/carts.png)
 
 ### Vista Home
 Muestra todos los productos agregados hasta el momento:  
