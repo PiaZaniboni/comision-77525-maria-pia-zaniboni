@@ -6,7 +6,26 @@ const productSchema = new mongoose.Schema({
     required: true,
     trim: true
   },
+  description: {
+    type: String,
+    required: true,
+    trim: true
+  },
+  code: {
+    type: String,
+    required: true,
+    trim: true
+  },
   price: {
+    type: Number,
+    required: true,
+    min: 0
+  },
+  status: {
+    type: Boolean,
+    required: true,
+  },
+  stock: {
     type: Number,
     required: true,
     min: 0
@@ -16,10 +35,9 @@ const productSchema = new mongoose.Schema({
     required: true,
     enum: ["vinyl", "cd", "cassette", "equipment", "accessory"]
   },
-  stock: {
-    type: Number,
-    required: true,
-    min: 0
+  thumbnails: {
+    type: [String],
+    default: []
   }
 }, {
   timestamps: true // guardar createdAt y updatedAt
