@@ -1,13 +1,25 @@
 import express from 'express';
-import connectDB from './config/db.js'
+import { engine } from 'express-handlebars';
+import path from "path";
+import { fileURLToPath } from 'url';
+import productRoutes from "./routes/product.router.js";
 
-const PORT = 8080;
-
-connectDB();
-
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const app = express();
+
+//Middlewares
 app.use(express.json());
+app.use(express.urlencoded({extended:true}));
+app.use(express.static(path.join(__dirname, "public" )));
 
+//Handlebars
+app.engine ("handlebars", engine());
+app.set("view engine", "handlebars");
+app.set("views", path.join( __dirname, "views" ));
 
-app.listen(PORT, () => console.log(`Servidor en http://localhost:${PORT}`));
+//Routes
+app.use("/api/products", productRoutes );
+
+export default  app;
