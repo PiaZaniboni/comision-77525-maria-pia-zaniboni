@@ -69,6 +69,9 @@
     - Llevar a `/products/:pid` para ver detalle completo.  
     - Agregarse al carrito directamente con un botón.  
 ![Products List](./assets/products.png)
+
+- **/products/:pid** 
+  - Visualización del detalle del producto.  
 ![Products Detail](./assets/product.png)
 
 - **/carts/:cid**  
