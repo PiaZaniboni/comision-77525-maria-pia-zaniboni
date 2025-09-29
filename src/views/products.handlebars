@@ -1,0 +1,55 @@
+<h1>Listado de Productos</h1>
+
+<form method="GET" action="/products">
+  <label>Categoria:</label>
+  <select name="category">
+    <option value="">Todas</option>
+    <option value="vinyl">Vinyl</option>
+    <option value="cd">CD</option>
+    <option value="cassette">Cassette</option>
+    <option value="equipment">Equipment</option>
+    <option value="accessory">Accessory</option>
+  </select>
+
+  <label>Status:</label>
+  <select name="status">
+    <option value="">Todos</option>
+    <option value="true">Disponible</option>
+    <option value="false">No disponible</option>
+  </select>
+
+  <label>Ordenar por precio:</label>
+  <select name="sort">
+    <option value="">Ninguno</option>
+    <option value="asc">Ascendente</option>
+    <option value="desc">Descendente</option>
+  </select>
+
+  <label>Límite:</label>
+  <input type="number" name="limit" value="10">
+
+  <button type="submit">Filtrar</button>
+</form>
+
+<ul>
+  {{#each products}}
+    <li>
+      <h2>{{this.title}}</h2>
+      <p>{{this.description}}</p>
+      <p>Precio: ${{this.price}}</p>
+      <p>Categoría: {{this.category}}</p>
+      <p>Status: {{this.status}}</p>
+      <a href="/products/{{this._id}}">Ver detalle</a>
+    </li>
+  {{/each}}
+</ul>
+
+<nav>
+  {{#if hasPrevPage}}
+    <a href="{{prevLink}}">Anterior</a>
+  {{/if}}
+  <span>Página {{page}} de {{totalPages}}</span>
+  {{#if hasNextPage}}
+    <a href="{{nextLink}}">Siguiente</a>
+  {{/if}}
+</nav>

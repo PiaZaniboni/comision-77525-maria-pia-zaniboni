@@ -4,6 +4,7 @@ import path from "path";
 import { fileURLToPath } from 'url';
 import productRoutes from "./routes/product.router.js";
 import cartRoutes from "./routes/carts.router.js";
+import viewRouter from "./routes/view.router.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -23,5 +24,6 @@ app.set("views", path.join( __dirname, "views" ));
 //Routes
 app.use("/api/products", productRoutes );
 app.use("/api/carts", cartRoutes );
+app.use("/", viewRouter);
 
 export default  app;

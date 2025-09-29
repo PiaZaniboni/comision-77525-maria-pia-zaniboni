@@ -8,10 +8,34 @@ import {
 
 export const getProducts = async (req, res) => {
   try {
-    const products = await getAllProducts();
-    res.json(products);
+    const { limit, page, sort, category, status } = req.query;
+
+    const options = { limit: Number(limit) || 10, page: Number(page) || 1, sort };
+    const query = {};
+    if (category) query.category = category;
+    if (status !== undefined) query.status = status;
+
+
+    const products = await getAllProducts(query, options);
+
+    const baseUrl = `${req.protocol}://${req.get("host")}${req.baseUrl}${req.path}`;
+    const prevLink = products.hasPrevPage ? `${baseUrl}?page=${products.prevPage}&limit=${limit || 10}` : null;
+    const nextLink = products.hasNextPage ? `${baseUrl}?page=${products.nextPage}&limit=${limit || 10}` : null;
+
+    res.json({
+      status: "success",
+      payload: products.docs,
+      totalPages: products.totalPages,
+      prevPage: products.prevPage,
+      nextPage: products.nextPage,
+      page: products.page,
+      hasPrevPage: products.hasPrevPage,
+      hasNextPage: products.hasNextPage,
+      prevLink,
+      nextLink
+    });
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    res.status(500).json({ status: "error", message: error.message });
   }
 };
 
