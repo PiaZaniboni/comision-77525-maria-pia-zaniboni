@@ -68,16 +68,9 @@
   - Cada producto puede:  
     - Llevar a `/products/:pid` para ver detalle completo.  
     - Agregarse al carrito directamente con un botón.  
-![Products View](./assets/products.png)
+![Products List](./assets/products.png)
+![Products Detail](./assets/product.png)
 
 - **/carts/:cid**  
   - Vista de un carrito específico con productos listados y detallados.  
-![Carts View](./assets/carts.png)
-
-### Vista Home
-Muestra todos los productos agregados hasta el momento:  
-![Home View](./assets/home.png)
-
-### Vista RealTimeProducts
-Lista de productos que se actualiza automáticamente en tiempo real:  
-![RealTimeProducts View](./assets/realtime.png)
+![Cart Detail](./assets/cart.png)
