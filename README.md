@@ -29,12 +29,37 @@
    npm i
    ```
 
-4. Levantar la aplicación:
+3. Levantar la aplicación:
    ```bash
    npm run dev
    ```
 
 ---
+
+## 📚 Endpoints disponibles
+
+### **/products**
+| Método | Ruta                        | Descripción |
+|--------|-----------------------------|-------------|
+| GET    | `/api/products`            | Obtiene todos los productos. Soporta query params: `limit`, `page`, `query`, `sort`. |
+| GET    | `/api/products/:pid`       | Obtiene un producto por su ID. |
+| POST   | `/api/products`            | Crea un producto nuevo. |
+| PUT    | `/api/products/:pid`       | Actualiza un producto por su ID. |
+| DELETE | `/api/products/:pid`       | Elimina un producto por su ID. |
+
+### **/carts**
+| Método | Ruta                                   | Descripción |
+|--------|----------------------------------------|-------------|
+| POST   | `/api/carts`                          | Crea un carrito nuevo (vacío). |
+| GET    | `/api/carts/:cid`                     | Obtiene los productos de un carrito (populate). |
+| POST   | `/api/carts/:cid/product/:pid`        | Agrega un producto al carrito. Si ya existe, incrementa la cantidad. |
+| PUT    | `/api/carts/:cid`                     | Reemplaza todos los productos del carrito. |
+| PUT    | `/api/carts/:cid/products/:pid`       | Actualiza cantidad de un producto específico. |
+| DELETE | `/api/carts/:cid/products/:pid`       | Elimina un producto específico del carrito. |
+| DELETE | `/api/carts/:cid`                     | Vacía todo el carrito. |
+
+---
+
 
 ## 🖼️ Capturas de la Entrega Final
 

@@ -9,7 +9,7 @@ export const createCart = async () => {
     return await cart.save();
 }
 
-export const addProductToCart = async ( cid, pid, quantify = 1 ) => {
+export const addProductToCart = async ( cid, pid, quantity = 1 ) => {
     const cart = await Cart.findById(cid);
     
     if (!cart) return null;
@@ -17,12 +17,14 @@ export const addProductToCart = async ( cid, pid, quantify = 1 ) => {
     const existingProduct = cart.products.find( p => p.product.toString() === pid );
 
     if (existingProduct) {
-        existingProduct.quantify += quantify
+        existingProduct.quantity += quantity
     }else{
-        cart.products.push({ product: pid, quantify });
+        cart.products.push({ product: pid, quantity });
     }
 
-    return await cart.save();
+    await cart.save();
+
+    return await Cart.findById(cid).populate("products.product");
 }
 
 export const updateCartProducts = async ( cid, products ) => {
@@ -33,7 +35,7 @@ export const updateCartProducts = async ( cid, products ) => {
     ).populate("products.product");
  }
 
- export const updateProductQuantity =  async () => {
+ export const updateProductQuantity =  async ( cid, pid, quantity) => {
     const cart = await Cart.findById(cid);
     
     if (!cart) return null;
@@ -42,9 +44,11 @@ export const updateCartProducts = async ( cid, products ) => {
 
     if( !productInCart ) return null;
 
-    productInCart.quantify = quantify;
+    productInCart.quantity = quantity;
 
-    return await cart.save();
+    await cart.save();
+
+    return await Cart.findById(cid).populate("products.product");
  }
 
  export const deleteProductFromCart = async (cid, pid) => {
@@ -53,7 +57,8 @@ export const updateCartProducts = async ( cid, products ) => {
 
     cart.products = cart.products.filter ( p => p.product.toString() !== pid );
 
-    return await cart.save();
+    await cart.save();
+    return await Cart.findById(cid).populate("products.product");
  }
 
 export const clearCart = async (cid) => {

@@ -19,7 +19,6 @@ export const getCart = async (req, res) => {
 };
 
 export const createNewCart = async (req, res) => {
-  console.log("cart");
   try {
     const cart = await createCart();
     res.status(201).json(cart);
