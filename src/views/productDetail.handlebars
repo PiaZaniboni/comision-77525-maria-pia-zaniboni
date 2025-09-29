@@ -1,0 +1,14 @@
+<h1>{{product.title}}</h1>
+<p>{{product.description}}</p>
+<p>Precio: {{product.price}}</p>
+<p>Categoría: {{product.category}}</p>
+<p>Status: {{product.status}}</p>
+<p>Stock: {{product.stock}}</p>
+{{#if product.thumbnails}}
+  {{#each product.thumbnails}}
+    <img src="{{this}}" alt="Imagen de producto" style="max-width:200px;" />
+  {{/each}}
+{{/if}}
+
+
+<a href="/products">Volver al listado de productos</a>

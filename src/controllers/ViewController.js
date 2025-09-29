@@ -1,7 +1,7 @@
-import { getAllProducts } from "../services/productService.js";
+import { getAllProducts, getProductById } from "../services/productService.js";
+import Cart from "../models/cart.model.js";
 
 export const renderProducts = async (req, res) => {
-  //console.log("req.query:", req.query);
   try {
     const { limit, page, sort, category, status } = req.query;
 
@@ -11,7 +11,6 @@ export const renderProducts = async (req, res) => {
     if (status !== undefined) query.status = status;
 
     const productsData = await getAllProducts(query, options);
-    console.log("productsData:", productsData);
 
     res.render("products", {
       title: "Listado de Productos",
@@ -23,6 +22,34 @@ export const renderProducts = async (req, res) => {
       prevLink: productsData.hasPrevPage ? `/products?page=${productsData.prevPage}&limit=${limit || 10}` : null,
       nextLink: productsData.hasNextPage ? `/products?page=${productsData.nextPage}&limit=${limit || 10}` : null
     });
+  } catch (error) {
+    res.status(500).send(error.message);
+  }
+};
+
+export const renderProductDetail = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const product = await getProductById( id);
+
+    if (!product) {
+      return res.status(404).send("Product not found");
+    }
+
+    res.render("productDetail", { product });
+  } catch (error) {
+    res.status(500).render("error", { message: error.message });
+  }
+};
+
+export const renderCart = async (req, res) => {
+  try {
+    const { cid } = req.params;
+    const cart = await Cart.findById(cid).populate("products.product").lean();
+    if (!cart) return res.status(404).render("error", { message: "Cart not found" });
+
+    res.render("cartDetail", { cart });
   } catch (error) {
     res.status(500).send(error.message);
   }

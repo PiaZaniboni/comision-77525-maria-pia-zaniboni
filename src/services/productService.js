@@ -29,7 +29,7 @@ export const getAllProducts = async (query = {}, options = {}) => {
 };
 
 export const getProductById = async (id) => {
-  return await Product.findById(id);
+  return await Product.findById(id).lean();
 };
 
 export const createProduct = async (productData) => {

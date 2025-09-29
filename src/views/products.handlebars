@@ -8,7 +8,6 @@
     <option value="cd">CD</option>
     <option value="cassette">Cassette</option>
     <option value="equipment">Equipment</option>
-    <option value="accessory">Accessory</option>
   </select>
 
   <label>Status:</label>
@@ -31,6 +30,12 @@
   <button type="submit">Filtrar</button>
 </form>
 
+<a href="/carts/68d9f6a773878e5686b4b6b0">
+  <button style="padding: 10px; background: #28a745; color: white; border: none; border-radius: 5px;">
+    Ver mi carrito 🛒
+  </button>
+</a>
+
 <ul>
   {{#each products}}
     <li>
@@ -40,6 +45,10 @@
       <p>Categoría: {{this.category}}</p>
       <p>Status: {{this.status}}</p>
       <a href="/products/{{this._id}}">Ver detalle</a>
+
+      <form action="/api/carts/68d9f6a773878e5686b4b6b0/product/{{this._id}}" method="POST" style="display:inline;">
+        <button type="submit">Agregar al carrito</button>
+      </form>
     </li>
   {{/each}}
 </ul>
